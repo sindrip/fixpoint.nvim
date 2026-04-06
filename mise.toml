@@ -1,0 +1,17 @@
+[settings]
+experimental = true
+
+[tools]
+lefthook = "latest"
+lua-language-server = "latest"
+stylua = "latest"
+
+[hooks]
+enter = "lefthook install"
+
+[tasks.test]
+description = "Type check and run tests"
+run = [
+  "nvim -u NONE --headless -l test/typecheck.lua",
+  "NVIM_APPNAME=fixpoint-test nvim -u NONE -l test/run.lua",
+]
