@@ -42,6 +42,9 @@ function M:watch(uri)
 
   local w = vim.uv.new_fs_event()
   if not w then
+    local msg = "fixpoint_fswatcher: failed to create fs_event for " .. uri
+    vim.lsp.log.warn(msg)
+    vim.notify(msg, vim.log.levels.WARN)
     return
   end
 
@@ -49,6 +52,7 @@ function M:watch(uri)
     vim.uri_to_fname(uri),
     {},
     vim.schedule_wrap(function()
+      self:watch(uri)
       self:_schedule_checktime(uri)
     end)
   )
